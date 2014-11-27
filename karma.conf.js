@@ -22,6 +22,10 @@ module.exports = function(config) {
       'client/bower_components/lodash/dist/lodash.compat.js',
       'client/bower_components/angular-socket-io/socket.js',
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
+      'client/bower_components/jquery/dist/jquery.js',
+      'client/bower_components/jquery-ui/jquery-ui.js',
+      'client/bower_components/angular-ui-sortable/sortable.js',
+      'client/bower_components/angular-local-storage/dist/angular-local-storage.js',
       'client/app/app.js',
       'client/app/app.coffee',
       'client/app/**/*.js',
@@ -60,7 +64,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // Start these browsers, currently available:
