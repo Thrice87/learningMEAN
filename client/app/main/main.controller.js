@@ -1,44 +1,31 @@
 'use strict';
 
 angular.module('learningMeanApp')
-  .controller('MainCtrl', function ($scope, $http, socket, localStorageService) {
-    $scope.awesomeThings = [];
+  .controller('MainCtrl', function ($scope, $http, socket) {
 
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-      socket.syncUpdates('thing', $scope.awesomeThings);
+    $http.get('/api/todos').success(function(todos) {
+      $scope.todos = todos;
+      socket.syncUpdates('todo', $scope.todos);
     });
 
-    $scope.addThing = function() {
-      if($scope.newThing === '') {
+    $scope.$on('$destroy', function() {
+      socket.unsyncUpdates('todo');
+    });
+
+    $scope.addTodo = function() {
+      if($scope.todo === '') {
         return;
       }
-      $http.post('/api/things', { name: $scope.newThing });
-      $scope.newThing = '';
-    };
-
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/things/' + thing._id);
-    };
-
-    $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('thing');
-    });
-
-    var todosInStore = localStorageService.get('todos');
-
-    $scope.todos = todosInStore || [];
-
-    $scope.$watch('todos', function () {
-      localStorageService.set('todos', $scope.todos);
-    }, true);
-
-    $scope.addTodo = function () {
-      $scope.todos.push($scope.todo);
+      $http.post('/api/todos', { body: $scope.todo });
       $scope.todo = '';
     };
 
-    $scope.removeTodo = function (index) {
-      $scope.todos.splice(index, 1);
+    $scope.updateTodo = function(todo) {
+      $http.put('api/todos/' + todo._id, { body: $scope.todo });
+      $scope.todo = '';
+    };
+
+    $scope.removeTodo = function(todo) {
+      $http.delete('/api/todos/' + todo._id);
     };
   });

@@ -7,12 +7,8 @@ angular.module('learningMeanApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
-  'ui.sortable',
-  'LocalStorageModule'
+  'ui.sortable'
 ])
-  .config(['localStorageServiceProvider', function(localStorageServiceProvider){
-    localStorageServiceProvider.setPrefix('ls');
-  }])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider
       .otherwise('/');

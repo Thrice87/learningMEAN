@@ -4,7 +4,7 @@
 
 'use strict';
 
-var thing = require('./thing.model');
+var thing = require('./todo.model');
 
 exports.register = function(socket) {
   thing.schema.post('save', function (doc) {
@@ -16,9 +16,9 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('thing:save', doc);
+  socket.emit('todo:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('thing:remove', doc);
+  socket.emit('todo:remove', doc);
 }
