@@ -21,7 +21,7 @@ angular.module('learningMeanApp')
     };
 
     $scope.updateTodo = function(todo) {
-      $http.put('api/todos/' + todo._id, { body: $scope.todo });
+      $http.put('api/todos/' + todo._id, { body: todo.body });
       $scope.todo = '';
     };
 
