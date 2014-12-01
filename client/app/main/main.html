@@ -15,7 +15,7 @@
 
   <!-- Todos list -->
   <div ui-sortable ng-model="todos">
-    <p class="input-group" ng-repeat="todo in todos | orderBy: '_id'" style="padding:5px 10px; cursor: move;">
+    <p class="input-group" ng-repeat="todo in todos" style="padding:5px 10px; cursor: move;">
       <input type="text" ng-model="todo.body" class="form-control">
       <span class="input-group-btn">
         <button class="btn btn-primary" ng-click="updateTodo(todo)" aria-label="Update">Update</button>
