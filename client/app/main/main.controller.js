@@ -16,12 +16,21 @@ angular.module('learningMeanApp')
       if($scope.todo === '') {
         return;
       }
-      $http.post('/api/todos', { body: $scope.todo });
+
+      $http.post('/api/todos', {
+        body: $scope.todo,
+        dateCreated: new Date()
+        });
+
       $scope.todo = '';
     };
 
     $scope.updateTodo = function(todo) {
-      $http.put('api/todos/' + todo._id, { body: todo.body });
+      $http.put('api/todos/' + todo._id, {
+        body: todo.body, 
+        dateLastUpdated: new Date()
+        });
+
       $scope.todo = '';
     };
 
