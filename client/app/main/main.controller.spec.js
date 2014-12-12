@@ -5,43 +5,44 @@ describe('Controller: MainCtrl', function () {
   // load the controller's module
   beforeEach(module('learningMeanApp'));
   beforeEach(module('socketMock'));
-  beforeEach(module('LocalStorageModule'));
 
   var MainCtrl,
-      scope,
+      $rootScope,
       $httpBackend;
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-    $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/things')
-      .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
+  beforeEach(inject(function($injector) {
+    $httpBackend = $injector.get('$httpBackend');
 
-    scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
-      $scope: scope
-    });
+    $rootScope = $injector.get('$rootScope');
+
+    var $controller = $injector.get('$controller');
+
+    MainCtrl = function() {
+      return $controller('MainCtrl', { $scope : $rootScope });
+    };
+
+    var controller = MainCtrl();
+
+    $httpBackend.expectGET('/api/todos').respond([ { text: 'test', dateCreated: new Date() } ]);
+
   }));
 
-  it('should attach a list of things to the scope', function () {
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
+
+  it('should add a todo successfully', function() {
+    $httpBackend.expectPOST('/api/todos', {
+      text: 'Test 1',
+      dateCreated: new Date()
+    }).respond(201, '');
+
+    var todo = 'Test 1';
+
+    $rootScope.addTodo(todo);
     $httpBackend.flush();
-    expect(scope.awesomeThings.length).toBe(4);
+    expect($rootScope.status).toBe('Success');
   });
 
-  it('should have no items to start', function () {
-    expect(scope.todos.length).toBe(0);
-  });
-
-  it('should add items to the list', function () {
-    scope.todo = 'Test 1';
-    scope.addTodo();
-    expect(scope.todos.length).toBe(1);
-  });
-
-  it('should add then remove an item from the list', function () {
-    scope.todo = 'Test 1';
-    scope.addTodo();
-    scope.removeTodo(0);
-    expect(scope.todos.length).toBe(0);
-  });
 });

@@ -12,22 +12,28 @@ angular.module('learningMeanApp')
       socket.unsyncUpdates('todo');
     });
 
-    $scope.addTodo = function() {
+    $scope.addTodo = function(todo) {
       if($scope.todo === '') {
         return;
       }
 
+      $scope.status = 'Saving';
+
       $http.post('/api/todos', {
-        body: $scope.todo,
+        text: todo,
         dateCreated: new Date()
-        });
+      }).success(function() {
+        $scope.status = 'Success';
+      }).error(function() {
+        $scope.status = 'Error!';
+      });
 
       $scope.todo = '';
     };
 
     $scope.updateTodo = function(todo) {
       $http.put('api/todos/' + todo._id, {
-        body: todo.body, 
+        text: todo.body,
         dateLastUpdated: new Date()
         });
 

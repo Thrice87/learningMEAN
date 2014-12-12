@@ -2,7 +2,7 @@
   <h2>My todos</h2>
 
   <!-- Todos input -->
-  <form role="form" ng-submit="addTodo()">
+  <form role="form" ng-submit="addTodo(todo)">
     <div class="row">
       <div class="input-group">
         <input type="text" ng-model="todo" placeholder="What needs to be done?" class="form-control">
@@ -16,7 +16,7 @@
   <!-- Todos list -->
   <div ng-model="todos">
     <p class="input-group" ng-repeat="todo in todos | orderBy : 'dateCreated' : true" style="padding:5px 10px;">
-      <input type="text" ng-model="todo.body" class="form-control">
+      <input type="text" ng-model="todo.text" class="form-control">
       <span class="input-group-btn">
         <button class="btn btn-primary" ng-click="updateTodo(todo)" aria-label="Update">Update</button>
         <button class="btn btn-danger" ng-click="removeTodo(todo)" aria-label="Remove">X</button>
