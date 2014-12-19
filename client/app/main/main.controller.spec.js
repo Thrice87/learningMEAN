@@ -8,7 +8,8 @@ describe('Controller: MainCtrl', function () {
 
   var MainCtrl,
       $rootScope,
-      $httpBackend;
+      $httpBackend,
+      id;
 
   beforeEach(inject(function($injector) {
     $httpBackend = $injector.get('$httpBackend');
@@ -23,7 +24,7 @@ describe('Controller: MainCtrl', function () {
 
     var controller = MainCtrl();
 
-    $httpBackend.expectGET('/api/todos').respond([ { text: 'test', dateCreated: new Date() } ]);
+    $httpBackend.whenGET('/api/todos').respond([ { _id: '1', text: 'test', dateCreated: new Date() } ]);
 
   }));
 
@@ -42,7 +43,27 @@ describe('Controller: MainCtrl', function () {
 
     $rootScope.addTodo(todo);
     $httpBackend.flush();
-    expect($rootScope.status).toBe('Success');
+  });
+
+  it('should update a todo successfully', function() {
+    var todo = { _id: '1', text: 'Test 2' };
+
+    $httpBackend.expectPUT('/api/todos/1', {
+      text: 'Test 2',
+      dateLastUpdated: new Date()
+    }).respond(200);
+
+    $rootScope.updateTodo(todo);
+    $httpBackend.flush();
+  });
+
+  it('should delete a todo successfully', function() {
+    var todo = { _id: '1'};
+
+    $httpBackend.expectDELETE('/api/todos/1').respond(204);
+
+    $rootScope.removeTodo(todo);
+    $httpBackend.flush();
   });
 
 });

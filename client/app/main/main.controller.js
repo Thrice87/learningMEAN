@@ -22,20 +22,15 @@ angular.module('learningMeanApp')
       $http.post('/api/todos', {
         text: todo,
         dateCreated: new Date()
-      }).success(function() {
-        $scope.status = 'Success';
-      }).error(function() {
-        $scope.status = 'Error!';
       });
-
       $scope.todo = '';
     };
 
     $scope.updateTodo = function(todo) {
-      $http.put('api/todos/' + todo._id, {
-        text: todo.body,
+      $http.put('/api/todos/' + todo._id, {
+        text: todo.text,
         dateLastUpdated: new Date()
-        });
+      });
 
       $scope.todo = '';
     };
